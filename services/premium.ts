@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 // RevenueCat API Key
-const REVENUECAT_API_KEY = 'test_GpJHZUIsReqqnYyHReLZdGqxFxI';
+const REVENUECAT_API_KEY = 'appl_hzkGjtyDhReZtljvstBZpBriObp';
 
 // Premium entitlement identifier (RevenueCat dashboard'da ayarlanacak)
 const ENTITLEMENT_ID = 'premium';
