@@ -19,20 +19,20 @@ export default function PaywallScreen() {
   }, []);
 
   const features = lang === 'tr' ? [
-    { icon: '☕', text: 'Sınırsız Kahve Falı — AI Vision ile' },
-    { icon: '🃏', text: 'Kişiselleştirilmiş Tarot Yorumları' },
-    { icon: '🌙', text: 'Derin Rüya Tabiri — Claude AI' },
-    { icon: '🖐️', text: 'El & Yüz Analizi — Kamera ile' },
-    { icon: '📜', text: 'Okuma Geçmişi & Arşiv' },
-    { icon: '🚫', text: 'Reklamsız Deneyim' },
+    { icon: '📸', text: 'Sınırsız Görsel Desen Analizi — AI Vision' },
+    { icon: '🎴', text: 'Kişiselleştirilmiş Karar Destek Kartları' },
+    { icon: '💭', text: 'Derin Rüya Günlüğü — Claude AI' },
+    { icon: '🔬', text: 'Biyometrik Analiz — Kamera ile' },
+    { icon: '🪐', text: 'Kozmik Profil — Astronomik Hesaplama' },
+    { icon: '📜', text: 'Analiz Geçmişi & Arşiv' },
     { icon: '⚡', text: 'Öncelikli AI İşleme' },
   ] : [
-    { icon: '☕', text: 'Unlimited Coffee Cup Readings — AI Vision' },
-    { icon: '🃏', text: 'Personalized Tarot Interpretations' },
-    { icon: '🌙', text: 'Deep Dream Interpretation — Claude AI' },
-    { icon: '🖐️', text: 'Palm & Face Analysis — Camera powered' },
-    { icon: '📜', text: 'Reading History & Archive' },
-    { icon: '🚫', text: 'Ad-free Experience' },
+    { icon: '📸', text: 'Unlimited Visual Pattern AI — AI Vision' },
+    { icon: '🎴', text: 'Personalized Decision Cards' },
+    { icon: '💭', text: 'Deep Dream Journal — Claude AI' },
+    { icon: '🔬', text: 'Biometric Insights — Camera powered' },
+    { icon: '🪐', text: 'Cosmic Profile — Astronomical Computation' },
+    { icon: '📜', text: 'Analysis History & Archive' },
     { icon: '⚡', text: 'Priority AI Processing' },
   ];
 
@@ -48,9 +48,12 @@ export default function PaywallScreen() {
         const success = await purchase(pkg);
         if (success) router.back();
       } else {
-        // Mock mode (web/test) — direkt geri dön
-        console.log('Mock purchase — no real offerings available');
-        router.back();
+        // Offerings not loaded yet — show alert instead of silently going back
+        const { Alert } = require('react-native');
+        Alert.alert(
+          lang === 'tr' ? 'Bağlantı Hatası' : 'Connection Error',
+          lang === 'tr' ? 'Abonelik bilgileri yüklenemedi. Lütfen tekrar deneyin.' : 'Unable to load subscription details. Please try again.',
+        );
       }
     } catch (e) {
       console.error('Purchase failed:', e);

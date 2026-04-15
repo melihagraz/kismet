@@ -2,14 +2,17 @@ import { useRouter } from 'expo-router';
 import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../constants/colors';
 import { getZodiacSign } from '../../constants/zodiac';
+import { useAuth } from '../../contexts/AuthContext';
 import { usePremium } from '../../hooks/usePremium';
 import { useProfile } from '../../hooks/useProfile';
 import i18n from '../../i18n';
 import { storage } from '../../services/storage';
+import { supabase } from '../../services/supabase';
 
 export default function ProfileScreen() {
   const { profile } = useProfile();
   const { isPremium, restore } = usePremium();
+  const { isAuthenticated, signOut, user } = useAuth();
   const router = useRouter();
   const lang = i18n.locale as 'tr' | 'en';
 
@@ -18,6 +21,44 @@ export default function ProfileScreen() {
   const handleReset = async () => {
     await storage.clearAll();
     router.replace('/onboarding/welcome');
+  };
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      lang === 'tr' ? 'Hesabı Sil' : 'Delete Account',
+      lang === 'tr'
+        ? 'Hesabınız ve tüm verileriniz kalıcı olarak silinecektir. Bu işlem geri alınamaz.'
+        : 'Your account and all data will be permanently deleted. This action cannot be undone.',
+      [
+        { text: lang === 'tr' ? 'İptal' : 'Cancel', style: 'cancel' },
+        {
+          text: lang === 'tr' ? 'Hesabı Sil' : 'Delete Account',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              // Delete user data from Supabase
+              if (user?.id) {
+                await supabase.from('profiles').delete().eq('id', user.id);
+                await supabase.from('messages').delete().or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
+                await supabase.from('weekly_matches').delete().or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`);
+              }
+              // Sign out from Supabase
+              await signOut();
+              // Clear local storage
+              await storage.clearAll();
+              // Navigate to welcome
+              router.replace('/onboarding/welcome');
+            } catch (error) {
+              console.error('Delete account error:', error);
+              Alert.alert(
+                lang === 'tr' ? 'Hata' : 'Error',
+                lang === 'tr' ? 'Hesap silinirken bir hata oluştu.' : 'An error occurred while deleting your account.'
+              );
+            }
+          },
+        },
+      ]
+    );
   };
 
   const handleRestore = async () => {
@@ -101,6 +142,14 @@ export default function ProfileScreen() {
             {lang === 'tr' ? '🗑️ Profili sıfırla (onboarding tekrar)' : '🗑️ Reset profile (restart onboarding)'}
           </Text>
         </TouchableOpacity>
+
+        {isAuthenticated && (
+          <TouchableOpacity onPress={handleDeleteAccount} style={{ padding: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(231,76,60,0.3)', marginTop: 10 }}>
+            <Text style={{ fontFamily: 'PlayfairDisplay_400Regular', fontSize: 14, color: '#e74c3c', textAlign: 'center' }}>
+              {lang === 'tr' ? '⚠️ Hesabı kalıcı olarak sil' : '⚠️ Permanently delete account'}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <Text style={{ fontFamily: 'PlayfairDisplay_400Regular', fontSize: 11, color: 'rgba(255,255,255,0.15)', marginTop: 32 }}>
