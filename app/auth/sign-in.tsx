@@ -76,12 +76,12 @@ export default function SignInScreen() {
 
         <Text style={{ fontSize: 64, marginBottom: 16 }}>💫</Text>
         <Text style={{ fontFamily: 'PlayfairDisplay_700Bold', fontSize: 26, color: Colors.star, textAlign: 'center', marginBottom: 8 }}>
-          {lang === 'tr' ? 'Kozmik Eşleşme' : 'Cosmic Match'}
+          {lang === 'tr' ? 'Bağlantılar' : 'Connections'}
         </Text>
         <Text style={{ fontFamily: 'PlayfairDisplay_400Regular', fontSize: 14, color: Colors.gray, textAlign: 'center', lineHeight: 22, marginBottom: 40 }}>
           {lang === 'tr'
-            ? 'Yıldızların sana seçtiği kişiyi keşfetmek için giriş yap. Burç uyumuna göre haftada 1 özel eşleşme.'
-            : 'Sign in to discover who the stars chose for you. 1 special match per week based on zodiac compatibility.'}
+            ? 'Ortak ilgilere dayalı haftalık bir bağlantı. Sohbet et, düşün, keşfet.'
+            : 'One weekly connection based on shared interests. Chat, reflect, discover.'}
         </Text>
 
         {/* Apple Sign-In */}

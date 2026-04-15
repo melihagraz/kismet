@@ -12,7 +12,7 @@ export interface UserProfile {
 }
 
 export interface ReadingRequest {
-  type: "coffee" | "tarot" | "dream" | "palm" | "face" | "birthchart";
+  type: "coffee" | "tarot" | "dream" | "birthchart";
   lang: "tr" | "en";
   userProfile?: UserProfile;
   imageBase64?: string;
@@ -68,14 +68,6 @@ export async function getTarotReading(cards: string[], positions: string[], lang
 
 export async function getDreamReading(dreamText: string, lang: "tr" | "en", profile?: UserProfile) {
   return getAIReading({ type: "dream", lang, dreamText, userProfile: profile });
-}
-
-export async function getPalmReading(imageBase64: string, lang: "tr" | "en", profile?: UserProfile) {
-  return getAIReading({ type: "palm", lang, imageBase64, userProfile: profile });
-}
-
-export async function getFaceReading(imageBase64: string, lang: "tr" | "en", profile?: UserProfile) {
-  return getAIReading({ type: "face", lang, imageBase64, userProfile: profile });
 }
 
 export async function getBirthChartReading(birthChartData: string, lang: "tr" | "en", profile?: UserProfile) {

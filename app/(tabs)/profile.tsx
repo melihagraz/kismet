@@ -152,7 +152,11 @@ export default function ProfileScreen() {
         )}
       </View>
 
-      <Text style={{ fontFamily: 'PlayfairDisplay_400Regular', fontSize: 11, color: 'rgba(255,255,255,0.15)', marginTop: 32 }}>
+      <Text style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', textAlign: 'center', marginTop: 28, paddingHorizontal: 20, lineHeight: 15 }}>
+        {i18n.t('disclaimer.long')}
+      </Text>
+
+      <Text style={{ fontFamily: 'PlayfairDisplay_400Regular', fontSize: 11, color: 'rgba(255,255,255,0.15)', marginTop: 16 }}>
         Cosmic Help v1.0.0 • Powered by Claude AI
       </Text>
     </ScrollView>

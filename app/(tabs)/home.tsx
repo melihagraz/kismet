@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Animated, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../constants/colors';
 import { getZodiacSign } from '../../constants/zodiac';
@@ -7,13 +7,12 @@ import { usePremium } from '../../hooks/usePremium';
 import { useProfile } from '../../hooks/useProfile';
 import i18n from '../../i18n';
 
-const matchingModule = { key: 'matching', icon: '💫', route: '/modules/matching' };
-const guidanceModule = { key: 'guidance', icon: '🔮', route: '/modules/guidance' };
+const matchingModule = { key: 'matching', icon: '🤝', route: '/modules/matching' };
+const guidanceModule = { key: 'guidance', icon: '🎯', route: '/modules/guidance' };
 
-// AI Tools — hidden in expandable section
-const aiTools = [
-  { key: 'coffee', icon: '📸', route: '/modules/coffee' },
-  { key: 'palmface', icon: '🔬', route: '/modules/palmface' },
+// Insight Tools — visible, reflection-focused (no palm/face/biometric)
+const insightTools = [
+  { key: 'coffee', icon: '🖼️', route: '/modules/coffee' },
   { key: 'tarot', icon: '🎴', route: '/modules/tarot' },
   { key: 'dream', icon: '💭', route: '/modules/dream' },
   { key: 'horoscope', icon: '📊', route: '/modules/horoscope' },
@@ -22,26 +21,20 @@ const aiTools = [
 export default function HomeScreen() {
   const router = useRouter();
   const { profile } = useProfile();
-  const { isPremium, togglePremiumDev } = usePremium();
+  const { isPremium } = usePremium();
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const pulseAnim = useRef(new Animated.Value(1)).current;
   const lang = i18n.locale as 'tr' | 'en';
-  const [toolboxOpen, setToolboxOpen] = useState(false);
 
-  const isEligibleForMatching = profile?.relation === 'single' && (profile?.focus || []).includes('love');
+  const isEligibleForConnections = profile?.relation === 'single' && (profile?.focus || []).includes('love');
   const matchingOptIn = profile?.matchingOptIn !== false;
   const guidanceOptIn = profile?.guidanceOptIn !== false;
-  const showMatching = isEligibleForMatching && matchingOptIn;
-  const showGuidance = !isEligibleForMatching && guidanceOptIn;
-  const weeklyFeature = showMatching ? matchingModule : (showGuidance ? guidanceModule : null);
+  const showConnections = isEligibleForConnections && matchingOptIn;
+  const showFocus = !isEligibleForConnections && guidanceOptIn;
+  const weeklyFeature = showConnections ? matchingModule : (showFocus ? guidanceModule : null);
   const zodiac = profile ? getZodiacSign(profile.birthDay, profile.birthMonth) : null;
 
   useEffect(() => {
     Animated.timing(fadeAnim, { toValue: 1, duration: 700, useNativeDriver: true }).start();
-    Animated.loop(Animated.sequence([
-      Animated.timing(pulseAnim, { toValue: 1.03, duration: 2500, useNativeDriver: true }),
-      Animated.timing(pulseAnim, { toValue: 1, duration: 2500, useNativeDriver: true }),
-    ])).start();
   }, []);
 
   const handlePress = (route: string, needsPremium: boolean = true) => {
@@ -85,20 +78,19 @@ export default function HomeScreen() {
             activeOpacity={0.85}
             onPress={() => handlePress(weeklyFeature.route)}
           >
-            <Animated.View style={{
+            <View style={{
               borderRadius: 24,
               overflow: 'hidden',
-              backgroundColor: showMatching ? '#1a1035' : '#0f1a2e',
+              backgroundColor: showConnections ? '#1a1035' : '#0f1a2e',
               borderWidth: 1,
-              borderColor: showMatching ? 'rgba(99,102,241,0.3)' : 'rgba(59,130,246,0.3)',
+              borderColor: showConnections ? 'rgba(99,102,241,0.3)' : 'rgba(59,130,246,0.3)',
               padding: 28,
-              transform: [{ scale: pulseAnim }],
             }}>
               {/* Status pill */}
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 16 }}>
                 <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#22c55e' }} />
                 <Text style={{ fontSize: 10, color: '#22c55e', fontWeight: '700', letterSpacing: 2 }}>
-                  {lang === 'tr' ? 'AKTİF' : 'ACTIVE'}
+                  {lang === 'tr' ? 'BU HAFTA' : 'THIS WEEK'}
                 </Text>
               </View>
 
@@ -114,21 +106,21 @@ export default function HomeScreen() {
               {/* CTA */}
               <View style={{
                 alignSelf: 'flex-start',
-                backgroundColor: showMatching ? 'rgba(99,102,241,0.25)' : 'rgba(59,130,246,0.25)',
+                backgroundColor: showConnections ? 'rgba(99,102,241,0.25)' : 'rgba(59,130,246,0.25)',
                 borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10,
                 flexDirection: 'row', alignItems: 'center', gap: 8,
               }}>
                 <Text style={{ color: '#fff', fontSize: 13, fontWeight: '600' }}>
-                  {lang === 'tr' ? 'Başla' : 'Start'}
+                  {lang === 'tr' ? 'Aç' : 'Open'}
                 </Text>
                 <Text style={{ color: '#fff', fontSize: 13 }}>→</Text>
               </View>
-            </Animated.View>
+            </View>
           </TouchableOpacity>
         </View>
         )}
 
-        {/* ============ COSMIC PROFILE (Birth Chart) ============ */}
+        {/* ============ COSMIC INSIGHTS (Birth Chart) ============ */}
         <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
           <TouchableOpacity
             activeOpacity={0.85}
@@ -153,117 +145,76 @@ export default function HomeScreen() {
             </View>
             <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 9, color: 'rgba(99,102,241,0.8)', letterSpacing: 2, fontWeight: '700', marginBottom: 4 }}>
-                {lang === 'tr' ? 'ASTRONOMİK HESAPLAMA' : 'ASTRONOMICAL COMPUTATION'}
+                {lang === 'tr' ? 'SEMBOLİK İÇGÖRÜ' : 'SYMBOLIC INSIGHTS'}
               </Text>
               <Text style={{ fontFamily: 'PlayfairDisplay_700Bold', fontSize: 17, color: '#fff' }}>
                 {i18n.t('modules.birthchart')}
               </Text>
               <Text style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>
-                {lang === 'tr' ? '10 gezegen · evler · açılar' : '10 planets · houses · aspects'}
+                {i18n.t('modules.birthchartDesc')}
               </Text>
             </View>
             <Text style={{ color: 'rgba(255,255,255,0.3)', fontSize: 18 }}>›</Text>
           </TouchableOpacity>
         </View>
 
-        {/* ============ DAILY INSIGHT (free) ============ */}
-        <View style={{ paddingHorizontal: 20, marginBottom: 24 }}>
-          <TouchableOpacity
-            activeOpacity={0.85}
-            onPress={() => handlePress('/modules/horoscope', false)}
-            style={{
-              borderRadius: 20,
-              backgroundColor: '#111827',
-              borderWidth: 1,
-              borderColor: 'rgba(255,255,255,0.08)',
-              padding: 16,
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 14,
-            }}
-          >
-            <View style={{
-              width: 44, height: 44, borderRadius: 12,
-              backgroundColor: 'rgba(34,197,94,0.1)',
-              alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Text style={{ fontSize: 20 }}>📊</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontFamily: 'PlayfairDisplay_600SemiBold', fontSize: 14, color: '#fff' }}>
-                {i18n.t('modules.horoscope')}
-              </Text>
-              <Text style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
-                {lang === 'tr' ? 'Ücretsiz · Günlük' : 'Free · Daily'}
-              </Text>
-            </View>
-            <View style={{ backgroundColor: 'rgba(34,197,94,0.15)', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 }}>
-              <Text style={{ color: '#22c55e', fontSize: 9, fontWeight: '700' }}>FREE</Text>
-            </View>
-          </TouchableOpacity>
+        {/* ============ INSIGHT TOOLS (visible, no hiding) ============ */}
+        <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12, paddingHorizontal: 4 }}>
+            <Text style={{ fontSize: 14 }}>💡</Text>
+            <Text style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontWeight: '600', letterSpacing: 2 }}>
+              {i18n.t('modules.insightTools').toUpperCase()}
+            </Text>
+          </View>
+
+          <View style={{ gap: 8 }}>
+            {insightTools.map(tool => (
+              <TouchableOpacity
+                key={tool.key}
+                activeOpacity={0.8}
+                onPress={() => handlePress(tool.route, tool.key !== 'horoscope')}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 12,
+                  backgroundColor: '#111827',
+                  borderWidth: 1,
+                  borderColor: 'rgba(255,255,255,0.06)',
+                  borderRadius: 14,
+                  padding: 14,
+                }}
+              >
+                <View style={{
+                  width: 38, height: 38, borderRadius: 10,
+                  backgroundColor: 'rgba(255,255,255,0.04)',
+                  alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Text style={{ fontSize: 18 }}>{tool.icon}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontFamily: 'PlayfairDisplay_600SemiBold', fontSize: 13, color: '#fff' }}>
+                    {i18n.t('modules.' + tool.key)}
+                  </Text>
+                  <Text style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>
+                    {i18n.t('modules.' + tool.key + 'Desc')}
+                  </Text>
+                </View>
+                {tool.key === 'horoscope' && (
+                  <View style={{ backgroundColor: 'rgba(34,197,94,0.15)', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 }}>
+                    <Text style={{ color: '#22c55e', fontSize: 9, fontWeight: '700' }}>FREE</Text>
+                  </View>
+                )}
+                <Text style={{ color: 'rgba(255,255,255,0.2)', fontSize: 14 }}>›</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
 
-        {/* ============ AI TOOLBOX (expandable) ============ */}
-        <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
-          <TouchableOpacity
-            onPress={() => setToolboxOpen(!toolboxOpen)}
-            activeOpacity={0.8}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingVertical: 12,
-            }}
-          >
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              <Text style={{ fontSize: 16 }}>🧪</Text>
-              <Text style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontWeight: '600', letterSpacing: 2 }}>
-                {lang === 'tr' ? 'AI ARAÇ KİTİ' : 'AI TOOLKIT'}
-              </Text>
-            </View>
-            <Text style={{ color: 'rgba(255,255,255,0.3)', fontSize: 14 }}>
-              {toolboxOpen ? '▲' : '▼'}
-            </Text>
-          </TouchableOpacity>
-
-          {toolboxOpen && (
-            <View style={{ gap: 8, marginTop: 4 }}>
-              {aiTools.map(tool => (
-                <TouchableOpacity
-                  key={tool.key}
-                  activeOpacity={0.8}
-                  onPress={() => handlePress(tool.route)}
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 12,
-                    backgroundColor: '#111827',
-                    borderWidth: 1,
-                    borderColor: 'rgba(255,255,255,0.06)',
-                    borderRadius: 14,
-                    padding: 14,
-                  }}
-                >
-                  <View style={{
-                    width: 38, height: 38, borderRadius: 10,
-                    backgroundColor: 'rgba(255,255,255,0.04)',
-                    alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <Text style={{ fontSize: 18 }}>{tool.icon}</Text>
-                  </View>
-                  <View style={{ flex: 1 }}>
-                    <Text style={{ fontFamily: 'PlayfairDisplay_600SemiBold', fontSize: 13, color: '#fff' }}>
-                      {i18n.t('modules.' + tool.key)}
-                    </Text>
-                    <Text style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>
-                      {i18n.t('modules.' + tool.key + 'Desc')}
-                    </Text>
-                  </View>
-                  <Text style={{ color: 'rgba(255,255,255,0.2)', fontSize: 14 }}>›</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
+        {/* ============ DISCLAIMER ============ */}
+        <View style={{ paddingHorizontal: 24, marginBottom: 16 }}>
+          <Text style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', textAlign: 'center', lineHeight: 15 }}>
+            {i18n.t('common.disclaimer')}
+          </Text>
         </View>
 
         {/* ============ PREMIUM BANNER ============ */}
@@ -281,20 +232,13 @@ export default function HomeScreen() {
                   {lang === 'tr' ? 'Premium\'a Geç' : 'Go Premium'}
                 </Text>
                 <Text style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
-                  {lang === 'tr' ? 'Tüm AI araçlarını aç' : 'Unlock all AI tools'}
+                  {lang === 'tr' ? 'Tüm içgörü araçlarını aç' : 'Unlock all insight tools'}
                 </Text>
               </View>
               <Text style={{ color: '#818cf8', fontSize: 18 }}>→</Text>
             </TouchableOpacity>
           </View>
         )}
-
-        {/* DEV Toggle */}
-        <TouchableOpacity onPress={togglePremiumDev} style={{ marginHorizontal: 20, marginTop: 8, alignItems: 'center', padding: 8, borderRadius: 8 }}>
-          <Text style={{ color: 'rgba(255,255,255,0.15)', fontSize: 10 }}>
-            DEV: Premium {isPremium ? 'ON' : 'OFF'}
-          </Text>
-        </TouchableOpacity>
       </Animated.View>
     </ScrollView>
   );

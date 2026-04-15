@@ -16,11 +16,11 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.cosmichelp.app",
-      "buildNumber": "5",
+      "buildNumber": "7",
       "usesAppleSignIn": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Cosmic Help uses the camera for AI vision analysis.",
-        "NSPhotoLibraryUsageDescription": "Cosmic Help needs access to your photos for AI analysis.",
+        "NSCameraUsageDescription": "Cosmic Help uses the camera to let you capture images for personal reflection.",
+        "NSPhotoLibraryUsageDescription": "Cosmic Help needs access to your photos so you can choose images for reflection.",
         "ITSAppUsesNonExemptEncryption": false
       }
     },

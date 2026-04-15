@@ -54,9 +54,9 @@ export default function CoffeeModule() {
   const reset = () => { setPhase('guide'); setResult(''); setProgress(0); setErrorMsg(''); };
 
   const guideSteps = lang === 'tr'
-    ? ['Kahvenizi için ve fincanı ters çevirin', 'Soğumasını bekleyin (2-3 dk)', 'Fincanı düz çevirip fotoğrafını çekin']
-    : ['Drink your coffee and flip the cup', 'Wait for it to cool (2-3 min)', 'Turn it right side up and take a photo'];
-  const guideTip = lang === 'tr' ? 'İyi aydınlatılmış ortamda, fincanın içini yukarıdan çekin' : 'Shoot from above in a well-lit area';
+    ? ['Dikkatini çeken bir görsel seç veya çek', 'Desenler, renkler, şekiller — hepsi olabilir', 'Görseli yükle, AI sana yansıma soruları sunsun']
+    : ['Pick or capture any image that caught your eye', 'Patterns, colors, shapes — anything works', 'Upload and AI will offer reflection prompts'];
+  const guideTip = lang === 'tr' ? 'Bu bir fal değil — kişisel düşünme aracı' : 'This is not fortune telling — a personal reflection tool';
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: Colors.deep }} contentContainerStyle={{ padding: 20, paddingTop: 60, alignItems: 'center', minHeight: '100%' }}>
@@ -67,11 +67,11 @@ export default function CoffeeModule() {
 
         {phase === 'guide' && (
           <View style={{ alignItems: 'center', maxWidth: 360 }}>
-            <Text style={{ fontSize: 64, marginBottom: 12 }}>☕</Text>
+            <Text style={{ fontSize: 64, marginBottom: 12 }}>🖼️</Text>
             <Text style={{ fontFamily: 'PlayfairDisplay_700Bold', fontSize: 22, color: Colors.star, marginBottom: 4 }}>{i18n.t('modules.coffee')}</Text>
             <View style={{ flexDirection: 'row', gap: 6, marginBottom: 20 }}><Badge type="premium" /><Badge type="instant" /></View>
             <Text style={{ fontFamily: 'PlayfairDisplay_700Bold', fontSize: 18, color: Colors.star, marginBottom: 16 }}>
-              {lang === 'tr' ? 'Fincanını Hazırla' : 'Prepare Your Cup'}
+              {lang === 'tr' ? 'Bir Görsel Yükle' : 'Upload an Image'}
             </Text>
             {guideSteps.map((step, i) => (
               <View key={i} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginBottom: 14, width: '100%' }}>
@@ -86,16 +86,16 @@ export default function CoffeeModule() {
             </View>
             <KismetButton title={'📸 ' + (lang === 'tr' ? 'Fotoğraf Çek' : 'Take Photo')} onPress={startReading} />
             <Text style={{ color: 'rgba(255,255,255,0.25)', fontSize: 11, marginTop: 12 }}>
-              ✨ {lang === 'tr' ? 'Gerçek AI yorumu — Claude ile' : 'Real AI reading — powered by Claude'}
+              ✨ {lang === 'tr' ? 'Öz-düşünce için — Claude AI ile' : 'For self-reflection — powered by Claude AI'}
             </Text>
           </View>
         )}
 
         {phase === 'analyzing' && (
           <View style={{ alignItems: 'center', justifyContent: 'center', minHeight: 300 }}>
-            <Text style={{ fontSize: 56, marginBottom: 16 }}>☕</Text>
+            <Text style={{ fontSize: 56, marginBottom: 16 }}>🖼️</Text>
             <Text style={{ color: Colors.goldLight, fontSize: 16, fontFamily: 'PlayfairDisplay_600SemiBold', marginBottom: 8 }}>
-              {lang === 'tr' ? 'Fincanın okunuyor...' : 'Reading your cup...'}
+              {lang === 'tr' ? 'Görsel işleniyor...' : 'Processing image...'}
             </Text>
             <View style={{ width: 200, height: 4, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 2, marginBottom: 8 }}>
               <View style={{ width: progress + '%', height: '100%', backgroundColor: Colors.gold, borderRadius: 2 }} />
@@ -106,7 +106,7 @@ export default function CoffeeModule() {
 
         {phase === 'result' && (
           <View style={{ alignItems: 'center', maxWidth: 380 }}>
-            <Text style={{ fontSize: 48, marginBottom: 8 }}>☕</Text>
+            <Text style={{ fontSize: 48, marginBottom: 8 }}>🖼️</Text>
             <Text style={{ color: Colors.gold, fontSize: 13, fontFamily: 'PlayfairDisplay_700Bold', letterSpacing: 2, marginBottom: 16 }}>
               {i18n.t('common.yourReading')}
             </Text>

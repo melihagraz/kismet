@@ -19,20 +19,20 @@ export default function PaywallScreen() {
   }, []);
 
   const features = lang === 'tr' ? [
-    { icon: '📸', text: 'Sınırsız Görsel Desen Analizi — AI Vision' },
-    { icon: '🎴', text: 'Kişiselleştirilmiş Karar Destek Kartları' },
-    { icon: '💭', text: 'Derin Rüya Günlüğü — Claude AI' },
-    { icon: '🔬', text: 'Biyometrik Analiz — Kamera ile' },
-    { icon: '🪐', text: 'Kozmik Profil — Astronomik Hesaplama' },
-    { icon: '📜', text: 'Analiz Geçmişi & Arşiv' },
+    { icon: '🖼️', text: 'Sınırsız Görsel Yansıma' },
+    { icon: '🎴', text: 'Kişiselleştirilmiş Düşünme Kartları' },
+    { icon: '💭', text: 'Detaylı Rüya Günlüğü' },
+    { icon: '🪐', text: 'Kozmik İçgörüler — Sembolik Analiz' },
+    { icon: '🎯', text: 'Haftalık Odak Önerileri' },
+    { icon: '📜', text: 'Geçmiş Yansıma Arşivi' },
     { icon: '⚡', text: 'Öncelikli AI İşleme' },
   ] : [
-    { icon: '📸', text: 'Unlimited Visual Pattern AI — AI Vision' },
-    { icon: '🎴', text: 'Personalized Decision Cards' },
-    { icon: '💭', text: 'Deep Dream Journal — Claude AI' },
-    { icon: '🔬', text: 'Biometric Insights — Camera powered' },
-    { icon: '🪐', text: 'Cosmic Profile — Astronomical Computation' },
-    { icon: '📜', text: 'Analysis History & Archive' },
+    { icon: '🖼️', text: 'Unlimited Image Reflection' },
+    { icon: '🎴', text: 'Personalized Prompt Cards' },
+    { icon: '💭', text: 'Detailed Dream Journal' },
+    { icon: '🪐', text: 'Cosmic Insights — Symbolic Analysis' },
+    { icon: '🎯', text: 'Weekly Focus Suggestions' },
+    { icon: '📜', text: 'Reflection History Archive' },
     { icon: '⚡', text: 'Priority AI Processing' },
   ];
 

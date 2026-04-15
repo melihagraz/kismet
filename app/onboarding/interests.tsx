@@ -23,11 +23,11 @@ export default function InterestsScreen() {
   };
 
   const interestOptions = [
-    { key: 'coffee', label: i18n.t('modules.coffee'), icon: '☕' },
-    { key: 'tarot', label: i18n.t('modules.tarot'), icon: '🃏' },
-    { key: 'horoscope', label: i18n.t('modules.horoscope'), icon: '✨' },
-    { key: 'dream', label: i18n.t('modules.dream'), icon: '🌙' },
-    { key: 'palmface', label: i18n.t('modules.palmface'), icon: '🖐️' },
+    { key: 'coffee', label: i18n.t('modules.coffee'), icon: '🖼️' },
+    { key: 'tarot', label: i18n.t('modules.tarot'), icon: '🎴' },
+    { key: 'horoscope', label: i18n.t('modules.horoscope'), icon: '📊' },
+    { key: 'dream', label: i18n.t('modules.dream'), icon: '💭' },
+    { key: 'birthchart', label: i18n.t('modules.birthchart'), icon: '🪐' },
   ];
 
   const expOptions = [

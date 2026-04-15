@@ -102,8 +102,8 @@ export default function MatchingHub() {
           <View style={{ alignItems: 'center', marginTop: 32 }}>
             <Text style={{ fontFamily: 'PlayfairDisplay_400Regular', fontSize: 14, color: Colors.gray, textAlign: 'center', lineHeight: 22, marginBottom: 24, maxWidth: 300 }}>
               {lang === 'tr'
-                ? 'Yıldızların sana seçtiği kişiyi keşfet. Burç uyumuna göre haftada 1 özel eşleşme.'
-                : 'Discover who the stars chose for you. 1 special match per week based on zodiac compatibility.'}
+                ? 'Ortak ilgilere dayalı haftalık bir bağlantı. Sohbet et, düşün, keşfet.'
+                : 'One weekly connection based on shared interests. Chat, reflect, discover.'}
             </Text>
             <KismetButton
               title={lang === 'tr' ? 'Giriş Yap' : 'Sign In'}

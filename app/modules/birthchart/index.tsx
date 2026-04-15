@@ -180,14 +180,14 @@ export default function BirthChartModule() {
               </View>
             </View>
 
-            <Text style={{ color: 'rgba(255,255,255,0.25)', fontSize: 11, marginTop: 8, marginBottom: 20, textAlign: 'center' }}>
+            <Text style={{ color: 'rgba(255,255,255,0.25)', fontSize: 11, marginTop: 8, marginBottom: 20, textAlign: 'center', paddingHorizontal: 16, lineHeight: 16 }}>
               {lang === 'tr'
-                ? '✨ Gerçek astronomik hesaplama + AI yorumu'
-                : '✨ Real astronomical calculation + AI interpretation'}
+                ? '✨ Astronomik verilere dayalı sembolik içgörüler — öz-düşünce için'
+                : '✨ Symbolic insights based on astronomical data — for self-reflection'}
             </Text>
 
             <KismetButton
-              title={lang === 'tr' ? 'Haritamı Hesapla' : 'Calculate My Chart'}
+              title={lang === 'tr' ? 'İçgörülerimi Göster' : 'Show My Insights'}
               onPress={calculateChart}
             />
           </View>

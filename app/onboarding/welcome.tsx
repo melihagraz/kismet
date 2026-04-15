@@ -28,9 +28,16 @@ export default function WelcomeScreen() {
       <Text style={{ fontFamily: 'PlayfairDisplay_700Bold', fontSize: 28, color: Colors.star, textAlign: 'center', marginBottom: 12, lineHeight: 36 }}>
         {i18n.t('onboarding.welcomeTitle')}
       </Text>
-      <Text style={{ fontFamily: 'PlayfairDisplay_400Regular', fontSize: 15, color: Colors.gray, textAlign: 'center', marginBottom: 48, lineHeight: 22 }}>
+      <Text style={{ fontFamily: 'PlayfairDisplay_400Regular', fontSize: 15, color: Colors.gray, textAlign: 'center', marginBottom: 32, lineHeight: 22 }}>
         {i18n.t('onboarding.welcomeSub')}
       </Text>
+
+      <View style={{ backgroundColor: 'rgba(99,102,241,0.08)', borderWidth: 1, borderColor: 'rgba(99,102,241,0.2)', borderRadius: 14, padding: 16, marginBottom: 32, maxWidth: 360 }}>
+        <Text style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', textAlign: 'center', lineHeight: 18 }}>
+          {i18n.t('disclaimer.onboardingBody')}
+        </Text>
+      </View>
+
       <KismetButton title={i18n.t('onboarding.start')} onPress={() => router.push('/onboarding/name')} />
     </Animated.View>
   );
